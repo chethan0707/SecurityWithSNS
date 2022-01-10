@@ -34,7 +34,7 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
         customAuthenticationFilter.setFilterProcessesUrl("/api/login")
         http?.csrf()?.disable()
         http?.sessionManagement()?.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        http?.authorizeRequests()?.antMatchers("/api/login/**")?.permitAll()
+        http?.authorizeRequests()?.antMatchers("/api/login/**", "/api/otp","/api/subscribe")?.permitAll()
         http?.authorizeRequests()?.antMatchers(HttpMethod.GET, "/api/getUsers/**")
             ?.hasAnyAuthority("ROLE_ADMIN", "ROLE_MANAGER")
         http?.authorizeRequests()?.antMatchers(HttpMethod.POST, "/api/saveUser/**")?.hasAnyAuthority("ROLE_ADMIN")
@@ -44,7 +44,6 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
         http?.addFilter(customAuthenticationFilter)
         http?.addFilterBefore(CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter::class.java)
     }
-
     @Bean
     override fun authenticationManagerBean(): AuthenticationManager {
         return super.authenticationManagerBean()

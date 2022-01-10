@@ -7,4 +7,5 @@ import org.springframework.data.mongodb.repository.Query
 interface UserRepo : MongoRepository<User, String> {
     //    fun findByRoleName(roleName: String):MutableList<User>
     fun findByUserName(username: String): User
+    fun findBy_id(_id: String): User
 }

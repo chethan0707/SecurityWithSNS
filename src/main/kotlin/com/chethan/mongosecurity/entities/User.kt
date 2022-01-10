@@ -8,8 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document
 @Document(collection = "user_credentials")
 class User(
     @Id
-    var id: String?,
-    var name: String,
+    var _id: String?,
     @Indexed
     var userName: String,
     var password: String,
@@ -17,7 +16,7 @@ class User(
     var roles: MutableList<Role>
 ) {
     override fun toString(): String {
-        return "User(id=$id, name='$name', userName='$userName', password='$password', roles=$roles)"
+        return "User(id=$_id, userName='$userName', password='$password', roles=$roles)"
     }
 
 }

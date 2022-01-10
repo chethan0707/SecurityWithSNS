@@ -1,16 +1,17 @@
 package com.chethan.mongosecurity.userconfig
 
+import com.amazonaws.auth.AWSStaticCredentialsProvider
+import com.amazonaws.auth.BasicAWSCredentials
+import com.amazonaws.services.sns.AmazonSNSClient
+import com.amazonaws.services.sns.AmazonSNSClientBuilder
+import com.chethan.mongosecurity.entities.User
 import com.chethan.mongosecurity.repositories.RoleRepo
 import com.chethan.mongosecurity.repositories.UserRepo
 import com.chethan.mongosecurity.services.UserServicesImpl
-import com.chethan.mongosecurity.entities.Role
-import com.chethan.mongosecurity.entities.User
 import org.springframework.boot.CommandLineRunner
-import org.springframework.cglib.proxy.NoOp
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
-import org.springframework.security.crypto.password.NoOpPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 
 @Configuration
@@ -18,6 +19,17 @@ class UserConfig {
     @Bean
     fun passwordEncoder(): PasswordEncoder {
         return BCryptPasswordEncoder()
+    }
+
+    @Bean
+    fun amazonSNSClient(): AmazonSNSClient {
+        val credentials = BasicAWSCredentials(
+            "AKIA33SLKXOW44DIQ74X",
+            "jrJluW++CJaxEcRwh3mWWquZyAesYYQNiQdrknWu"
+        )
+        return AmazonSNSClientBuilder.standard().withRegion("ap-south-1")
+            .withCredentials(AWSStaticCredentialsProvider(credentials))
+            .build() as AmazonSNSClient
     }
 
     @Bean
@@ -31,19 +43,19 @@ class UserConfig {
             val role1 = roleRepo.findAll()
 
             userServices.saveUser(
-                User(null, "chethan", "chethan", "1234", mutableListOf()),
+                User("+918904756775", "chethan", "1234", mutableListOf()),
             )
             userServices.saveUser(
-                User(null, "nithin", "retro", "1234", mutableListOf()),
+                User(null, "retro", "1234", mutableListOf()),
             )
             userServices.saveUser(
                 User(
-                    null, "gowtham", "heat", "1234", mutableListOf()
+                    null, "heat", "1234", mutableListOf()
                 )
             )
             userServices.saveUser(
                 User(
-                    null, "suhas", "darksoul", "1234", mutableListOf()
+                    null, "darksoul", "1234", mutableListOf()
                 )
             )
 

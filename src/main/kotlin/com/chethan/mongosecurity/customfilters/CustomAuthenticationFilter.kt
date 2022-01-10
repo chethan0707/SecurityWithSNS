@@ -15,10 +15,10 @@ import kotlin.streams.toList
 
 class CustomAuthenticationFilter(
     authenticationManager: AuthenticationManager,
-    ) :
+) :
     UsernamePasswordAuthenticationFilter(
     ) {
-    init{
+    init {
         this.authenticationManager = authenticationManager
     }
 
@@ -27,7 +27,7 @@ class CustomAuthenticationFilter(
         response: HttpServletResponse?
     ): Authentication {
         val username: String? = request?.getParameter("username")
-        val password = request?.getParameter("password")
+        val password = request?.getParameter("otp")
         val authenticationToken = UsernamePasswordAuthenticationToken(username, password)
         return authenticationManager.authenticate(authenticationToken)
     }

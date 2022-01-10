@@ -10,12 +10,31 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping(path = ["/api"])
 class UserController {
+
+
     @Autowired
     lateinit var userServices: UserServices
+
+    @GetMapping(path = ["/otp"])
+    fun getotp(@RequestParam phone: String) {
+        val user = userServices.getUser(phone)
+        if (user._id == null) {
+            userServices.snsSubscribe(phone)
+        }
+        val otp = userServices.generateOTP()
+        userServices.sendOTP(phone, otp)
+        println(phone)
+        println(otp)
+    }
 
     @PostMapping(path = ["/saveUser"])
     fun saveUser(@RequestBody user: User): ResponseEntity<User> {
         return ResponseEntity.ok(userServices.saveUser(user))
+    }
+
+    @GetMapping(path = ["/subscribe"])
+    fun subscribe(phone: String): ResponseEntity<String> {
+        return ResponseEntity.ok(userServices.snsSubscribe(phone))
     }
 
     @GetMapping(path = ["/getUsers"])
@@ -29,8 +48,8 @@ class UserController {
     }
 
     @PostMapping(path = ["/addRole"])
-    fun addRoleToUser(@RequestParam username: String, rolename: String): ResponseEntity<String> {
-        userServices.addRoleToUser(username, rolename)
+    fun addRoleToUser(@RequestParam phone: String, rolename: String): ResponseEntity<String> {
+        userServices.addRoleToUser(phone, rolename)
         return ResponseEntity.ok("Successfully added role to user")
     }
 }
