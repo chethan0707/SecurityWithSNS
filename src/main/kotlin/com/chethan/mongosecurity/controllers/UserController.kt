@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping(path = ["/api"])
 class UserController {
-
-
     @Autowired
     lateinit var userServices: UserServices
 
